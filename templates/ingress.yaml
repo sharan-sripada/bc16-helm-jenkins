@@ -18,3 +18,31 @@ spec:
             port:
               number: 80
   ingressClassName: nginx-bc
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bc16-ingress-be
+  namespace: bc16
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - host: bc16.dev-apps.io
+    http:
+      paths:
+      - path: /job(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: jobservice
+            port:
+              number: 8082
+      - path: /org(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: orgservice
+            port:
+              number: 8081
+  ingressClassName: nginx-bc
