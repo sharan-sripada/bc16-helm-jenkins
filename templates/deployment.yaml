@@ -1,0 +1,151 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: frontend
+  labels: 
+    tier: frontend
+    app: bc16
+spec:
+  selector:
+    matchLabels:
+      tier: frontend
+  replicas: {{ .Values.replicaCount}}
+  template:
+    metadata:
+      name: frontend
+      labels: 
+        name: frontend
+        tier: frontend 
+        app: bc16
+    spec:
+      containers:
+        - name: fe
+          image: sharansripada/fe_n
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: 
+  name: postgres
+  labels: 
+    name: postgres
+    tier: db
+    app: bc16
+spec:
+  serviceName: db
+  selector:
+    matchLabels:
+      name: postgres
+      tier: db
+  template:
+    metadata:
+      name: postgress
+      labels: 
+        name: postgres
+        tier: db
+        app: bc16 
+    spec:
+      containers:
+        - name: postgres
+          image: postgres
+          ports:
+            - containerPort: 5432
+          env:
+            - name: "POSTGRES_USER"
+              value: "postgres"
+            - name: "POSTGRES_PASSWORD"
+              value: "postgres"
+            - name: "POSTGRES_DB"
+              value: "postgres"
+          volumeMounts:
+            - name: pv-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: pv-data
+        persistentVolumeClaim:
+          claimName: task-pv-claim
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: job
+  labels: 
+    name: job
+    tier: backend
+    app: bc16
+spec:
+  selector:
+    matchLabels:
+      tier: backend
+      name: job
+  template:
+    metadata:
+      name: job
+      labels: 
+        name: job
+        tier: backend
+        app: bc16 
+    spec:
+      containers:
+        - name: job-srv
+          image: sharansripada/job_n
+          ports:
+            - containerPort: 8082
+          env:
+            - name: "SPRING_DATASOURCE_URL"
+              value: "jdbc:postgresql://db:5432/postgres"
+            - name: "SPRING_DATASOURCE_USERNAME"
+              value: "postgres"
+            - name: "SPRING_DATASOURCE_PASSWORD"
+              value: "postgres"
+            - name: "SPRING_JPA_HIBERNATE_DDL_AUTO"
+              value: "update"
+            - name: "ORG_URL"
+              value: "http://bc16.dev-apps.io:31491/org/api/v1/organizations"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: org
+  labels: 
+    name: org
+    tier: backend
+    app: bc16
+spec:
+  selector:
+    matchLabels:
+      tier: backend
+      name: org
+  template:
+    metadata:
+      name: org
+      labels: 
+        name: org
+        tier: backend
+        app: bc16 
+    spec:
+      containers:
+        - name: org-srv
+          image: sharansripada/org_n
+          ports:
+            - containerPort: 8081
+          env:
+            - name: "SPRING_DATASOURCE_URL"
+              value: "jdbc:postgresql://db:5432/postgres"
+            - name: "SPRING_DATASOURCE_USERNAME"
+              value: "postgres"
+            - name: "SPRING_DATASOURCE_PASSWORD"
+              value: "postgres"
+            - name: "SPRING_JPA_HIBERNATE_DDL_AUTO"
+              value: "update"
+           
+           
+
+
+
+

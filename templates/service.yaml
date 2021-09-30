@@ -1,0 +1,64 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  labels:
+    name: postgres
+    app: bc16
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    name: postgres
+    app: bc16 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jobservice
+  labels:
+    name: jobservice
+    app: bc16
+spec:
+  ports:
+    - port: 8082
+      targetPort: 8082
+
+  selector:
+    name: job
+    app: bc16 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orgservice
+  labels:
+    name: orgservice
+    app: bc16
+spec:
+  ports:
+    - port: 8081
+      targetPort: 8081
+  selector:
+    name: org
+    app: bc16 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: feservice
+  labels:
+    name: feservice
+    app: bc16
+spec: 
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    tier: frontend
+    app: bc16 
