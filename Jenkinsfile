@@ -4,7 +4,7 @@ pipeline{
 			kubernetes {
             containers: [
    
-            containerTemplate(name: 'helm', image: 'alpine/helm', command: 'cat', tty: 'true')
+            containerTemplate(name: 'helm', image: 'alpine/helm', command: 'sleep', args: '99d', tty: 'true')
             ]
 		// 	    yaml '''
         // apiVersion: v1
