@@ -32,7 +32,7 @@ pipeline{
                             container('helm'){
                                sh """
                                   export KUBECONFIG=\${MY_KUBECONFIG}
-                                  helm install bc16 . -n bc16                              
+                                  helm upgrade --install  bc16 . -n bc16                              
                                   """
                             
                             }
