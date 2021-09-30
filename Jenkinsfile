@@ -2,10 +2,9 @@ pipeline{
 		agent{
 			
 			kubernetes {
-            containers: [
-   
+     
             containerTemplate(name: 'helm', image: 'alpine/helm', command: 'sleep', args: '99d', tty: 'true')
-            ]
+        
 		// 	    yaml '''
         // apiVersion: v1
         // kind: Pod
