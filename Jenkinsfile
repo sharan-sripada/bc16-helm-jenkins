@@ -17,18 +17,18 @@ podTemplate(label: 'bc16', containers: [
                 stage("Build") {
                         
                     container('helm'){
-                        withCredentials([file(credentialsId: 'config-file', variable: 'config')]) 
+                        withCredentials([file(credentialsId: 'config-file', variable: 'config')]) {
 
 
                                sh """
                                   export KUBECONFIG=\${config}
                                   helm upgrade --install  bc16 . -n bc16                              
                                   """
-                            
-                        }
+                        }    
+                    }
                             
                         
-                    }
+                }
 
 		
 		
