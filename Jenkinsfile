@@ -1,49 +1,42 @@
-pipeline{
-		agent{
-			
-			kubernetes {
-     
-            containerTemplate(name: 'helm', image: 'alpine/helm', command: 'sleep', args: '99d', tty: 'true')
-        
-		// 	    yaml '''
-        // apiVersion: v1
-        // kind: Pod
-        // spec:
-        //   containers:
-        //   - name: helm
-        //     image: alpine/helm
-        //     command:
-        //     - cat
-        //     tty: true
-        // '''
-    
-    }
-		}
-    environment {
-        MY_KUBECONFIG = credentials('config-file')
-    }
-		stages{
-				stage('Checkout Source') {
-      steps {
+import groovy.transform.Field
+
+podTemplate(label: 'bc16', containers: [
+	containerTemplate(name: 'helm', image: 'alpine/helm', command: 'cat', ttyEnabled: true)],
+	volumes: [hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')]
+) {
+
+  node('bc16'){
+
+    	stage('Checkout Source') {
+      
         git 'https://github.com/sharan-sripada/bc16-helm-jenkins.git'
-      }
+      
     }
-                    
+
+    
                 stage("Build") {
-                        steps {
-                            container('helm'){
+                        
+                    container('helm'){
+                        withCredentials([file(credentialsId: 'config-file', variable: 'config')]) 
+
+
                                sh """
-                                  export KUBECONFIG=\${MY_KUBECONFIG}
+                                  export KUBECONFIG=\${config}
                                   helm upgrade --install  bc16 . -n bc16                              
                                   """
                             
-                            }
-                            
                         }
+                            
+                        
                     }
-                    
-                    
-				
-                
-            }
+
+		
+		
+		}
+	
+/
+    
+
+ 
+
 }
