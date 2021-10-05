@@ -20,9 +20,10 @@ podTemplate(label: 'bc16', containers: [
                         withCredentials([file(credentialsId: 'config-file', variable: 'config')]) {
 
 
-                               sh 'export KUBECONFIG=\${config}'
-                               sh 'helm upgrade --install  bc16 . -n bc16'                              
-                                  
+                               sh """
+                                  export KUBECONFIG=\${config}
+                                  helm upgrade --install  bc16 . -n bc16                              
+                                  """
                         }    
                     }
                             
