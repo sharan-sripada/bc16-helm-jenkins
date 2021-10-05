@@ -7,6 +7,22 @@ podTemplate(label: 'bc16', containers: [
 
   node('bc16'){
 
+
+properties([
+            parameters([
+                string(
+                    defaultValue: 'latest',
+                    description: '', 
+                    name: 'fe_version',
+                    trim: true),
+                string(
+                    defaultValue: 'latest',
+                    description: '', 
+                    name: 'be_version',
+                    trim: true),
+            ])
+        ])
+
     	stage('Checkout Source') {
       
         git 'https://github.com/sharan-sripada/bc16-helm-jenkins.git'
