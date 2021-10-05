@@ -38,7 +38,7 @@ properties([
 
                                sh """
                                   export KUBECONFIG=\${config}
-                                  helm upgrade --install  bc16 . -n bc16                              
+                                  helm upgrade --install  bc16 . -n bc16 --set beversion=${be_version} --set feversion=${fe_version}                              
                                   """
                         }    
                     }

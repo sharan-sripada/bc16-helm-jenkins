@@ -4,5 +4,5 @@
 
 replicaCount: 3
 
-fe_version: latest
-be_version: latest
+feversion: latest
+beversion: latest

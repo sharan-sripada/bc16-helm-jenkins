@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: fe
-          image: sharansripada/fe_jenkins:{{ .Values.fe_version }}
+          image: sharansripada/fe_jenkins:{{ .Values.feversion }}
           ports:
             - containerPort: 80
 
@@ -92,7 +92,7 @@ spec:
     spec:
       containers:
         - name: job-srv
-          image: sharansripada/job_jenkins:{{ .Values.be_version }}
+          image: sharansripada/job_jenkins:{{ .Values.beversion }}
           ports:
             - containerPort: 8082
           env:
@@ -131,7 +131,7 @@ spec:
     spec:
       containers:
         - name: org-srv
-          image: sharansripada/org_jenkins:{{ .Values.be_version }}
+          image: sharansripada/org_jenkins:{{ .Values.beversion }}
           ports:
             - containerPort: 8081
           env:
