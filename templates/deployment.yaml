@@ -105,7 +105,7 @@ spec:
             - name: "SPRING_JPA_HIBERNATE_DDL_AUTO"
               value: "update"
             - name: "ORG_URL"
-              value: "http://bc16.dev-apps.io:31491/org/api/v1/organizations"
+              value: "http://bc16.dev-apps.io:32002/org/api/v1/organizations"
 
 ---
 apiVersion: apps/v1
